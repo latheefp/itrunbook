@@ -1,0 +1,64 @@
+name: Deploy to Kubernetes
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch
+  workflow_dispatch:  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # - name: Login to Docker Hub
+    #   run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      #  env:
+      #    DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+         
+
+    # - name: Build and push Docker image
+    #   env:
+    #     IMAGE_TAG: latest  # Change this to your desired tag
+    #   run: |
+    #     docker build . -t latheefp/wapi:latest
+    #     docker login -u latheefp -p Chimmu@123
+    #     docker push latheefp/wapi:latest
+
+    - name: Build and push Docker image
+      env:
+        
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
+      run: |
+        CURRENT_DATE=$(date +"%Y%m%d")
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        IMAGE_TAG=${CURRENT_DATE}_${COMMIT_HASH}  
+        echo "Building image with tag $IMAGE_TAG"
+        docker build . -t latheefp/itrunbook:$IMAGE_TAG \
+          --build-arg BUILD_DATE=${CURRENT_DATE} \
+          --build-arg COMMIT_HASH=${COMMIT_HASH}
+        echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+        docker tag latheefp/itrunbook:$IMAGE_TAG latheefp/itrunbook:latest
+        docker push latheefp/itrunbook:$IMAGE_TAG
+        docker push latheefp/itrunbook:latest
+
+
+    - name: Update Kubernetes deployment
+      env:
+        CURRENT_DATE: $(date +"%Y%m%d%H%M%S")
+        COMMIT_HASH: $(git rev-parse --short HEAD)
+      run: |
+        CURRENT_DATE=$(date +"%Y%m%d")
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        IMAGE_TAG=${CURRENT_DATE}_${COMMIT_HASH}  
+        echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
+        echo image tag is $IMAGE_TAG
+        export KUBECONFIG=$PWD/kubeconfig.yaml  # Set KUBECONFIG to the path of the kubeconfig file
+        kubectl config get-contexts  # Lists available contexts
+        kubectl config use-context egrand
+        kubectl set image -n  itrunbook  deployment/itrunbook itrunbook=latheefp/itrunbook:$IMAGE_TAG
+        kubectl -n itrunbook rollout restart deployment/itrunbook
