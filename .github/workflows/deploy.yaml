@@ -36,7 +36,7 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         APP_NAME: ${{ github.event.repository.name }}
-        VERSION: ${{ vars.VERSION }        
+        VERSION: ${{ vars.VERSION }}       
       run: |
         echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
         export KUBECONFIG=$PWD/kubeconfig.yaml  # Set KUBECONFIG to the path of the kubeconfig file
