@@ -23,14 +23,13 @@ jobs:
         VERSION: ${{ vars.VERSION }}
       run: |
         echo "Building image with tag $VERSION"
-        IMAGENAME=$APP_NAME:$IMAGE_TAG
-        docker build . -t latheefp/$APP_NAME:$IMAGENAME \
+        docker build . -t latheefp/$APP_NAME:$VERSION \
           --build-arg BUILD_DATE=${CURRENT_DATE} \
           --build-arg COMMIT_HASH=${COMMIT_HASH}
         echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-        docker tag latheefp/$IMAGENAME latheefp/$APP_NAME:latest
+        docker tag latheefp/$APP_NAME:$VERSION latheefp/$APP_NAME:latest
         docker push latheefp/$APP_NAME:latest
-        docker push latheefp/$IMAGENAME
+        docker push latheefp/$APP_NAME:$VERSION
 
 
     # - name: Update Kubernetes deployment
