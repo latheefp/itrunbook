@@ -1,0 +1,5 @@
+# Database configuration
+DB_HOST=db
+DB_NAME=phpbb
+DB_USER=phpbb
+DB_PASS=qfKrKTYTYNVeO8ed

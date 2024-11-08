@@ -1,5 +1,8 @@
 ./files/*
 files
-docker
+docker/volume
 ./docker
 ./files
+./database
+./cache-old
+./docker/volume
