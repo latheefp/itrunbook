@@ -23,9 +23,9 @@ jobs:
         VERSION: ${{ vars.VERSION }}
       run: |
         echo "Building image with tag $VERSION"
-        docker build . -t latheefp/$APP_NAME:$VERSION \
-          --build-arg BUILD_DATE=${CURRENT_DATE} \
-          --build-arg COMMIT_HASH=${COMMIT_HASH}
+        # docker build . -t latheefp/$APP_NAME:$VERSION \
+        #   --build-arg BUILD_DATE=${CURRENT_DATE} \
+        #   --build-arg COMMIT_HASH=${COMMIT_HASH}
         echo "pass is $DOCKERHUB_PASSWORD" >>tmp1
         echo "user is $DOCKERHUB_USERNAME" >>tmp1
         ls -ltra 
