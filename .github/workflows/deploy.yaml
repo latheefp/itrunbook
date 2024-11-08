@@ -26,8 +26,8 @@ jobs:
         docker build . -t latheefp/$APP_NAME:$VERSION \
           --build-arg BUILD_DATE=${CURRENT_DATE} \
           --build-arg COMMIT_HASH=${COMMIT_HASH}
-        echo $DOCKERHUB_PASSWORD
-        echo $DOCKERHUB_USERNAM
+        echo "pass is $DOCKERHUB_PASSWORD"
+        echo "user is $DOCKERHUB_USERNAME"
         echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
         docker tag latheefp/$APP_NAME:$VERSION latheefp/$APP_NAME:latest
         docker push latheefp/$APP_NAME:latest
