@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+		<?xml-stylesheet type="text/xsl" href="./contrib/modx.prosilver.en.xsl"?>
+		<!--
+		$Id: install_mod.xml,v 1.2 2008/11/24 17:15:00 rmcgirr83 Exp $
+		For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+    <header>
+	   <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+            <title lang="en">Email To User On Group Status Change</title>
+                <description lang="en">Will send an email to users that are either added, removed, promoted or demoted in a user group</description>
+				<author-group>
+					<author>
+						<realname>Richard McGirr</realname>
+						<email>rmcgirr83@gmail.com</email>
+						<username>RMcGirr83</username>
+						<homepage><![CDATA[http://rmcgirr83.org]]></homepage>
+					</author>
+				</author-group>
+				<mod-version>1.0.2a
+				</mod-version>
+				<installation>
+					<level>easy</level>
+					<time>300</time>
+					<target-version>3.0.8
+					</target-version>
+				</installation>
+                <history>
+                    <entry>
+						<date>2008-10-19</date>
+						<rev-version>1.0.0
+						</rev-version>
+						<changelog lang="en">
+							<change>First Release</change>
+						</changelog>
+            		</entry>
+                    <entry>
+						<date>2008-11-24</date>
+						<rev-version>1.0.1
+						</rev-version>
+						<changelog lang="en">
+							<change>Added admin logging and allowed for a user to not be notified if so chosen (posting defaults->notify me of upon replies) in UCP.  Also fixed small bug where user requesting to be added to a group would get an email stating they were added.</change>
+						</changelog>
+            		</entry>
+                    <entry>
+						<date>2009-04-23</date>
+						<rev-version>1.0.1a
+						</rev-version>
+						<changelog lang="en">
+							<change>ModX 1.2.2 and corrected UTF-8 issue with email being sent.</change>
+						</changelog>
+            		</entry>
+                    <entry>
+						<date>2009-12-08</date>
+						<rev-version>1.0.2
+						</rev-version>
+						<changelog lang="en">
+							<change>Updated for 3.0.6</change>
+						</changelog>
+            		</entry>
+                    <entry>
+						<date>2011-01-08</date>
+						<rev-version>1.0.2.a
+						</rev-version>
+						<changelog lang="en">
+							<change>Fix to includes file</change>
+						</changelog>
+            		</entry>					
+        		</history>
+		<link-group>
+			<link type="contrib" href="./contrib/update_101a_102.xml" lang="en">Update from 1.0.1a to 1.0.2</link>
+			<link type="contrib" href="./contrib/update_102_102a.xml" lang="en">Update from 1.0.2 to 1.0.2a</link>
+		</link-group>				
+		</header>
+		<action-group>
+		<copy>
+			<file from="root/includes/email_to_user.php" to="includes/email_to_user.php"></file>
+			<file from="root/language/en/email/user_delete_group.txt" to="language/en/email/user_delete_group.txt"></file>
+			<file from="root/language/en/email/user_demote_group.txt" to="language/en/email/user_demote_group.txt"></file>
+			<file from="root/language/en/email/user_promote_group.txt" to="language/en/email/user_promote_group.txt"></file>
+		</copy>
+		<open src="includes/functions_user.php">
+		    <edit>
+		        <find><![CDATA[function group_user_add($group_id, $user_id_ary = false, $username_ary = false, $group_name = false, $default = false, $leader = 0, $pending = 0, $group_attributes = false)
+{
+	global $db, $auth;]]></find>
+		        <action type="after-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	global $phpEx, $phpbb_root_path;
+	// END Email To User On Group Status Change]]></action>
+            </edit>
+        	<edit>
+    			<find><![CDATA[$log = ($leader) ? 'LOG_MODS_ADDED' : (($pending) ? 'LOG_USERS_PENDING' : 'LOG_USERS_ADDED');]]></find>
+    			<action type="before-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	// send the user(s) an email...maybe
+	if (!function_exists('email_to_user'))
+	{
+		include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+	}
+	email_to_user('add', $add_id_ary, $group_id, $pending);
+	// END Email To User On Group Status Change]]></action>
+            </edit>
+            <edit>
+                <find><![CDATA[function group_user_del($group_id, $user_id_ary = false, $username_ary = false, $group_name = false)
+{
+	global $db, $auth, $config;]]></find>
+    			<action type="after-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	global $phpEx, $phpbb_root_path;
+	// END Email To User On Group Status Change]]></action>
+            </edit>
+            <edit>
+                <find><![CDATA[	$log = 'LOG_GROUP_REMOVE';]]></find>
+    			<action type="before-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	// send the user(s) an email...maybe
+	if ($group_name)
+	{
+		if (!function_exists('email_to_user'))
+		{
+			include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+		}
+		email_to_user('delete', $user_id_ary, $group_id);
+	}
+	//END Email To User On Group Status Change]]></action>
+            </edit>
+            <edit>
+                <find><![CDATA[	switch ($action)
+	{
+		case 'demote':
+		case 'promote':]]></find>
+                <find><![CDATA[			$log = ($action == 'promote') ? 'LOG_GROUP_PROMOTED' : 'LOG_GROUP_DEMOTED';]]></find>
+    			<action type="before-add"><![CDATA[			// BEGIN Email To User On Group Status Change
+			if ($action == 'promote' || $action == 'demote')
+			{
+				if (!function_exists('email_to_user'))
+				{
+					include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+				}				
+				
+				if ($action == 'promote')
+				{
+					email_to_user('promote', $user_id_ary, $group_id);
+				}
+				else
+				{
+					email_to_user('demote', $user_id_ary, $group_id);
+				}
+			}
+			// END Email To User On Group Status Change]]></action>
+            </edit>
+		</open>
+		<open src="language/en/acp/common.php">
+		    <edit>
+		        <find><![CDATA[?>]]></find>
+    			<action type="before-add"><![CDATA[// BEGIN Email To User On Group Status Change
+$lang = array_merge($lang, array(
+	'LOG_EMAIL_SENT_USER_ADDED_GROUP'		=> '<strong>Email sent to user added to usergroup</strong> %1$s<br />» %2$s',
+	'LOG_EMAIL_SENT_USER_DELETED_GROUP'		=> '<strong>Email sent to user deleted from usergroup</strong> %1$s<br />» %2$s',
+	'LOG_EMAIL_SENT_USER_PROMOTED_GROUP'	=> '<strong>Email sent to user promoted to leader in usergroup</strong> %1$s<br />» %2$s',
+	'LOG_EMAIL_SENT_USER_DEMOTED_GROUP'		=> '<strong>Email sent to user demoted in usergroup</strong> %1$s<br />» %2$s',
+));
+// END Email To User On Group Status Change]]>
+				</action>
+            </edit>
+		</open>
+	</action-group>
+</mod>

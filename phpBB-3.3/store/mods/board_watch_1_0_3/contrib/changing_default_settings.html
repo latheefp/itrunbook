@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+<title>Changing Default Settings for Boardwatch</title>
+</head>
+
+<body>
+
+<h1>Changing Default Settings For Boardwatch</h1>
+
+<p>You may want to change the default options that this mod sets for each user.  The default options (the options that apply to each user unless and until the user changes it) are set to '0' in the following three lines in the install_boardwatch.php file:<br /><br />
+
+array('phpbb_users', 'user_boardwatchb', array('TINYINT', 0)),<br />
+array('phpbb_users', 'user_boardwatchf', array('TINYINT', 0)),<br />
+array('phpbb_users', 'user_boardwatcht', array('TINYINT', 0)),<br /><br />
+
+The first line (the one that refers to user_boardwatchb) specifies the default for boardwatch.  A default of 0 means that each user will get a notice for every single post the user is allowed to read on the site.  If you instead want the default to be that each user gets a notice for a post the user is allowed to read and then does not get another notice until he revisits the site, change '0' to '1'.  And if you instead want the default to be that boardwatch is turned off for the user change '0' to '2'.<br /><br />
+
+The second query (the one for user_boardwatchf) specifies the default for forum watch.  A default of 0 means that each user will get a notice for every single post in a forum the user is watching.  If you instead want the default to be that each user gets a notice for a post in a forum the user is watching and then does not get another notice for posts in that forum until the user revisits that forum (the regular phpbb3 behavior for forum watch), change '0' to '1'.<br /><br />
+
+The third query (the one for user_boardwatcht) specifies the default for topic watch.  A default of 0 means that each user will get a notice for every single reply in a topic the user is watching.  If you instead want the default to be that each user gets a notice for a reply in a topic the user is watching and then does not get another notice for replies in that topic until the user revisits that topic (the usual phpbb3 behavior for topic watch), change '0' to '1'.<br /><br />
+
+The above are just the defaults for users.  The mod allows each user to change the defaults if you grant permission for the user to do so (if you don't grant permission the user will remain with the defaults unless youu manually change them for the user).<br /><br />
+
+If you have already run the install_boardwatch.php script and now want to change the default, you will need to manually run a database query (using phpmyadmin or whatever other way you ordinarily use for manually changing database entries).  Figure out which database entry (boardwatchb, boardwatchf or boardwatcht) you want to change the default of and the new default you want and then run an appropriate query to make the change.  For example, if you want to change boardwatch (boardwatchb) to default 2, you would run this query for mysql (you may need to adapt this if you don't use mysql):<br /><br />
+
+ALTER TABLE phpbb_users<br />
+MODIFY user_boardwatchb TINYINT(1) UNSIGNED DEFAULT '2' NOT NULL;<br /><br />
+
+That sets boardwatch at no for future users but allows anyone who has boardwatch permission to turn it on in the future (assuming you have granted users permission to make that change).<br /><br />
+
+And if you also want to change all the old users to that default you would run this query for mysql (again you may need to adapt this if you don't use mysql):<br /><br />
+
+UPDATE phpbb_users<br />
+SET user_boardwatchb = 2<br />
+WHERE 1 = 1;<br /><br />
+
+That sets boardwatch to 'no' for everyone but leaves forum watch and topic watch choices at whatever settings the user has selected.
+
+</body>
+</html>

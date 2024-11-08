@@ -1,0 +1,352 @@
+##############################################################
+## MOD Title:		Board watch
+## MOD Author: 		asinshesq < N/A > (Alan) N/A
+## MOD Description:	This mod gives users a 'board watch' option to receive
+##					notifications for posts made anywhere on the site
+##					(analogous to forum watch but for the entire board).
+##
+## MOD Version:		1.0.2
+##
+## Installation Level:	Easy
+## Installation Time:	20 Minutes
+##
+## Files To Edit:	adm/style/acp_users_prefs.html
+##					includes/acp/acp_users.php
+##					includes/functions_display.php
+##					includes/functions_posting.php
+##
+##
+## Included Files:	adm/styles/acp_boardwatch.html
+##					includes/constants_boardwatch.php
+##					includes/functions_boardwatch.php
+##					includes/ucp/ucp_boardwatch.php
+##					includes/ucp/info/ucp_boardwatch.php
+##					install/install_permissions.php
+##					language/en/acp/permissions_boardwatch.php
+##					language/en/email/boardwatch_forum_notify.txt
+##					language/en/email/boardwatch_forum_notify_but.txt
+##					language/en/email/boardwatch_newtopic_notify.txt
+##					language/en/email/boardwatch_newtopic_notify_but.txt
+##					language/en/email/boardwatch_post.txt
+##					language/en/email/boardwatch_post_but.txt
+##					language/en/email/boardwatch_reply.txt
+##					language/en/email/boardwatch_reply_but.txt
+##					language/en/email/boardwatch_topic_notify.txt
+##					language/en/email/boardwatch_topic_notify_but.txt
+##					language/en/mods/info_ucp_boardwatch.php
+##					styles/prosilver/template/ucp_boardwatch.html
+##					styles/subsilver2/template/ucp_boardwatch.html
+##					umil/*.*
+##
+## License:			http://opensource.org/licenses/gpl-license.php GNU General Public License v2
+##
+##############################################################
+## For security purposes, please check: http://www.phpbb.com/mods/
+## for the latest version of this MOD. Although MODs are checked
+## before being allowed in the MODs Database there is no guarantee
+## that there are no security problems within the MOD. No support
+## will be given for MODs not found within the MODs Database which
+## can be found at http://www.phpbb.com/mods/
+##############################################################
+## Author Notes:	Each user can choose between two ways for board watch to work:
+##					(1) send notification of the first post since the user's last
+##					visit and send no further notifications until the user revisits
+##					the site (analogous to the way forum watch and topic watch work)
+##					or (2) send notifications of all posts. In addition, each user
+##					can choose whether forum watch and topic watch work in the normal
+##					phpbb3 way (analogous to (1) above) or instead send
+##					notifications of all posts or replies in the subscribed forums
+##					or topics.  The ability to choose between these two ways of working
+##					for boardwatch. forum watch and topic watch can be turned off
+##					in the acp.  This mod also slightly changes the wording of the regular phpbb3
+##					notifications to let recipients know how to change their
+##					notification settings, and it changes the post links in those notifications
+##					so that they lead to the earliest unread post in the topic in question
+##					(which I think is a more logical destination than the most
+##					recent post in the topic).Important: before running the install_boardwatch script
+##					read change_default_settings.html which appears in the contrib folder.
+##
+##					Important: before running the install_boardwatch script read
+##					change_default_settings.html which appears in the contrib folder.
+##
+##############################################################
+## MOD History:
+##
+##	2010-11-24 - Version 1.0.3
+##		no change in mod other than those required to install into phpbb 3.0.8, and includes newer version of umil folder
+##
+##	2009-09-26 - Version 1.0.2
+##		no change in mod, but includes newer version of umil folder and tested with phpbb3.0.6
+##
+##	2009-05-09 - Version 1.0.1e
+##		fixed version number in includes/ucp/info/ucp_boardwatch.php
+##
+##		changed the phrase "separately subscribed to a another topic or forum" 
+##		or "separately subscribed to a topic or forum" to
+##		"separately subscribed to another topic or forum" in each of the files
+##		this mod adds to language/en/email with filenames ending in "but.txt",
+##		and deleted sentence that begins with "You will not receive another 
+##		topic reply notification..." in language/en/email/boardwatch_topic_notify.txt;
+##
+##		fixed function call in acp_users.php (changed &$data to $data)
+##
+##		fixed sql query and recursive $email_template definition problems in includes/functions_posting.php
+##
+##		fixed bug that changed a user's setting to 0 for a boardwatch option when the user had no permission
+##		to see that option and updated any other boardwatch option
+##
+##		added umil installer to automatically install the required module, permissions and database changes
+##
+##	2009-02-15 - Version 1.0.0
+##		no changes in code (re-numbered to 1.0.0 for validation)
+##
+##	2009-02-11 - Version 0.0.1
+##		initial version
+##############################################################
+## Before Adding This MOD To Your Forum, You Should Back Up All Files Related To This MOD
+##############################################################
+
+#
+#-----[ COPY ]------------------------------------------------
+#
+copy root/*.* to *.*
+
+#
+#-----[ OPEN ]------------------------------------------------
+#
+adm/style/acp_users_prefs.html
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+	<fieldset class="quick">
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------------
+#
+	<!-- start mod boardwatch -->
+	<!-- INCLUDE acp_boardwatch.html -->
+	<!-- end mod boardwatch -->
+
+#
+#-----[ OPEN ]------------------------------------------------
+#
+includes/acp/acp_users.php
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+					'notify'	=> request_var('notify', $user_row['user_notify']),
+				);
+
+#
+#-----[ AFTER, ADD ]------------------------------------------------
+#
+				// start mod boardwatch
+				include($phpbb_root_path . 'includes/functions_boardwatch.' . $phpEx);
+				boardwatch_draw_acp_prefs($data, $user_row);
+				// end mod boardwatch
+				
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+							'user_notify'	=> $data['notify'],
+						);
+
+#
+#-----[ AFTER, ADD ]------------------------------------------------
+#
+						// start mod boardwatch
+						boardwatch_submit_acp_prefs($sql_ary, $data);
+						// end mod boardwatch
+
+#
+#-----[ OPEN ]------------------------------------------------
+#
+includes/functions_display.php
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+		$can_watch = true;
+
+#
+#-----[ AFTER, ADD ]------------------------------------------------
+#
+		// start mod boardwatch
+		// if this use has a user_notify_status flag set for no more notices till the next visit, reset flag to 0
+		if ($user->data['user_notify_status'])
+		{
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET user_notify_status = 0
+				WHERE user_id = ' . $user->data['user_id'];
+			$db->sql_query($sql);
+		}
+		// end mod boardwatch
+
+#
+#-----[ OPEN ]------------------------------------------------
+#
+includes/functions_posting.php
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+	// -- get forum_userids	|| topic_userids
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------------
+#
+	// start mod boardwatch
+	include($phpbb_root_path . 'includes/functions_boardwatch.' . $phpEx);
+	include($phpbb_root_path . 'includes/constants_boardwatch.' . $phpEx);
+	$boardwatch_yes_but_list = include_boardwatch_users($notify_rows, $sql_ignore_users, $mode);
+	// note: in addition to the foregoing, added u.user_notify_status and a test for BOARDWATCH_YES in the query below and in the FORUMS_WATCH TABLE query after that
+	// end mod boardwatch
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+	$sql = 'SELECT u.user_id, u.username,
+
+#
+#-----[ IN-LINE FIND ]------------------------------------------------
+#
+u.user_jabber
+
+#
+#-----[ IN-LINE AFTER, ADD ]------------------------------------------------
+#
+, u.user_boardwatch' . (($topic_notification) ? 't' : 'f') . '
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+			AND w.notify_status = " . NOTIFY_YES . '
+
+#
+#-----[ REEPLACE WITH ]------------------------------------------------
+#
+			AND (w.notify_status = " . NOTIFY_YES . ' OR u.user_boardwatch' . (($topic_notification) ? 't' : 'f') . ' = ' . BOARDWATCH_YES . ')
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+		$notify_rows[$row['user_id']] = array(
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------------
+#
+		// start mod boardwatch (and end mod too)...added next line
+		$row['user_boardwatch'] = ($topic_notification) ? $row['user_boardwatcht'] : $row['user_boardwatchf'];
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+			'template'		=> ($topic_notification) ? 'topic_notify' : 'newtopic_notify',
+
+#
+#-----[ REPLACE WITH ]------------------------------------------------
+#
+			// start mod boardwatch (and end mod too)...added next line and edited the one after to insert 'boardwatch_' in names of templates
+			'yes_but'		=> ($row['user_boardwatch'] == BOARDWATCH_YES_BUT) ? true : false,
+			'template'		=> ($topic_notification) ? 'boardwatch_topic_notify' : 'boardwatch_newtopic_notify',
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
+
+#
+#-----[ REPLACE WITH ]------------------------------------------------
+#
+		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber, u.user_boardwatchf
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+				AND fw.notify_status = " . NOTIFY_YES . '
+
+#
+#-----[ REEPLACE WITH ]------------------------------------------------
+#
+				AND (fw.notify_status = " . NOTIFY_YES . ' OR u.user_boardwatchf = ' . BOARDWATCH_YES . ')
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+				'template'		=> 'forum_notify',
+
+#
+#-----[ REPLACE WITH ]------------------------------------------------
+#
+				// start mod boardwatch (and end mod too)...added next line and edited the one after to insert 'boardwatch_' in name of template
+				'yes_but'		=> ($row['user_boardwatchf'] == BOARDWATCH_YES_BUT) ? true : false,
+				'template'		=> 'boardwatch_forum_notify',
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+			$msg_list_ary[$row['template']][$pos]['user_id']= $row['user_id'];
+			
+#
+#-----[ AFTER, ADD ]------------------------------------------------
+#			
+			// start mod boardwatch (and end mod too)...added next line
+			$msg_list_ary[$row['template']][$pos]['yes_but']= $row['yes_but'];
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+				$messenger->template($email_template, $addr['lang']);
+
+#
+#-----[ REPLACE WITH ]------------------------------------------------
+#
+				// start mod boardwatch (and end mod too)...added the next line and in the one after, changed
+				// $email_template to $boardwatch_template
+				$boardwatch_template = ($addr['yes_but']) ? $email_template . '_but' : $email_template;
+				$messenger->template($boardwatch_template, $addr['lang']);
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+					'U_FORUM'				=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id",
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------------
+#
+					// start mod boardwatch
+					'U_BOARDWATCH_SETTINGS'	=> generate_board_url() . "/ucp.php?i=boardwatch&mode=boardwatch",
+					'U_FIRST_UNREAD'		=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&t=$topic_id&view=unread#unread",
+					// end mod boardwatch
+
+#
+#-----[ FIND ]------------------------------------------------
+#
+	if (!empty($update_notification['topic']))
+
+#
+#-----[ BEFORE, ADD ]------------------------------------------------
+#
+	// start mod boardwatch
+	if (!empty($update_notification['boardwatch']))
+	{
+		update_boardwatch_status($boardwatch_yes_but_list);
+	}
+	// end mod boardwatch
+
+
+
+#
+#-----[ DIY INSTRUCTIONS ]-------------------------------------------------
+#
+After making the file edits this mod has you make, navigate your browser to http://[your_address]/install_boardwatch.php
+to complete the installation.  Then, go into the global permissions part of the ACP and grant the applicable
+global permissions for this mod to users or groups as you think appropriate.
+
+#
+#-----[ SAVE/CLOSE ALL FILES ]--------------------------------
+#
+# EoM
