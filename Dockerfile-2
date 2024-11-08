@@ -1,0 +1,35 @@
+#FROM php:apache
+FROM php:7.4.33-apache-bullseye
+#FROM  bitnami/phpbb:3.3.0
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zlib1g-dev \
+    libzip-dev \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd mysqli zip
+
+# Set PHPBB version
+ARG PHPBB_VERSION=3.3.4
+
+# Download and extract PHPBB
+COPY . /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
+# ADD https://www.phpbb.com/files/release/phpBB-${PHPBB_VERSION}.tar.bz2 /tmp/phpbb.tar.bz2
+# RUN tar -xjf /tmp/phpbb.tar.bz2 -C /var/www/html --strip-components=1 \
+#     && rm /tmp/phpbb.tar.bz2 \
+#     && chown -R www-data:www-data /var/www/html
+
+# Expose port
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]

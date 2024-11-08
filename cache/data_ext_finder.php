@@ -1,4 +1,0 @@
-<?php exit; ?>
-1724073036
-704
-a:6:{s:32:"ae451a4f33f6ef8ecab8f54446de385d";a:0:{}s:32:"229ada317b6cb032817004bb257ac31b";a:0:{}s:32:"d88338fec7a4396b136b035dea45b3e0";a:0:{}s:32:"d5364063870db90f2b22675020112ea5";a:1:{i:0;a:4:{s:10:"named_path";s:63:"ext/kasimi/loginrequired/language/en/info_acp_loginrequired.php";s:8:"ext_name";s:20:"kasimi/loginrequired";s:4:"path";s:37:"ext/kasimi/loginrequired/language/en/";s:8:"filename";s:26:"info_acp_loginrequired.php";}}s:32:"0ecd0762188770b85f358a994902305a";a:0:{}s:32:"f098d30c47d0a7d3aadc9768f1cee30c";a:1:{i:0;a:4:{s:10:"named_path";s:37:"language/en/acp/permissions_phpbb.php";s:8:"ext_name";s:1:"/";s:4:"path";s:16:"language/en/acp/";s:8:"filename";s:21:"permissions_phpbb.php";}}}

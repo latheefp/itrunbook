@@ -1,10 +1,16 @@
-version: '3.8'
-
 services:
   phpbb:
     build:
       context: .
+    #image: bitnami/phpbb:3.3.0
     ports:
-      - "8080:80"
+      - "8088:80"
     env_file:
       - docker/env
+   # volumes:
+     #  - ./Docker/volume:/update
+    networks:
+        - infratool     
+networks:
+    infratool:
+      external: true

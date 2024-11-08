@@ -1,0 +1,5 @@
+#db error related to notification.type.forum type conflict. 
+UPDATE `phpbb_notification_types` SET `notification_type_id` = '121', `notification_type_name` = 'notification.type.forum1' WHERE `phpbb_notification_types`.`notification_type_id` = 12; 
+
+#admin email set.
+UPDATE `phpbb_users` SET `user_email` = 'latheefp@gmail.com' WHERE `phpbb_users`.`user_id` = 2; 
