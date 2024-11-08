@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpbb.com/mods/xml/modx-1.2.6.xsd">
+  <header>
+    <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+    <title lang="en">PDF24 Articles To PDF</title>
+    <description lang="en">This mod enables your readers to create a PDF file of articles of a topic.</description>
+    <author-notes lang="en"></author-notes>
+    <author-group>
+      <author>
+        <email>team@pdf24.org</email>
+        <homepage>http://www.pdf24.org</homepage>
+        <realname>Geek Software GmbH</realname>
+        <username>pdf24</username>
+      </author>
+    </author-group>
+    <mod-version>1.3.2</mod-version>
+    <installation>
+      <level>easy</level>
+      <time>500</time>
+      <target-version>3.0.12</target-version>
+    </installation>
+	<history>
+		<entry>
+			<date>2013-10-24</date>
+			<rev-version>1.3.2</rev-version>
+			<changelog lang="en">
+				<change>[fixed] Added permission checks to the create PDF file</change>
+				<change>Tested with latest phpBB version 3.0.12</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2013-09-02</date>
+			<rev-version>1.3.1</rev-version>
+			<changelog lang="en">
+				<change>[fixed] Fixed installer problems. Should now work with AutoMOD</change>
+				<change>Tested with latest phpBB version 3.0.11</change>
+				<change>[fixed] Fixed latest MOD-Validation issues</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2012-04-19</date>
+			<rev-version>1.3.0</rev-version>
+			<changelog lang="en">
+				<change>Tested with latest phpBB version</change>
+				<change>Removed the subsilver2 install file</change>
+				<change>Uses a PDF icon instead of a text</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2011-05-06</date>
+			<rev-version>1.2.2</rev-version>
+			<changelog lang="en">
+				<change>[fixed]  Fixed problems mentioned by phpBB team.</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2011-05-19</date>
+			<rev-version>1.2.1</rev-version>
+			<changelog lang="en">
+				<change>[fixed]  Fixed a bug with links in created PDF.</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2011-05-19</date>
+			<rev-version>1.2.0</rev-version>
+			<changelog lang="en">
+				<change>Changed parts with respect to phpBB coding guidlines.</change>
+				<change>Removed limit of number of articles in a PDF file.</change>
+				<change>Changed minor parts.</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2010-11-24</date>
+			<rev-version>1.1.0</rev-version>
+			<changelog lang="en">
+				<change>Generated PDF's don't need any more be sent to an email address. There is only a Create PDF Link which creates the PDF. After the PDF is created the user have to download it.</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2009-05-15</date>
+			<rev-version>1.0.6</rev-version>
+			<changelog lang="en">
+				<change>[fixed] Changed code to suit to phpbb coding guidelines</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2008-08-26</date>
+			<rev-version>1.0.5</rev-version>
+			<changelog lang="en">
+				<change>[fixed] Fixed some problems</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2008-08-07</date>
+			<rev-version>1.0.4</rev-version>
+			<changelog lang="en">
+				<change>Release for version 3.0.2</change>
+				<change>[fixed] Fixed some problems with modx format</change>
+			</changelog>
+		</entry>		
+		<entry>
+			<date>2008-05-13</date>
+			<rev-version>1.0.2</rev-version>
+			<changelog lang="en">
+				<change>[change] All apended files to suit to phpBB3</change>
+				<change>[fixed] A lot of format error and folder structure to suit MODX and phpBB3 guidelines</change>
+			</changelog>
+		</entry>
+		<entry>
+			<date>2008-05-08</date>
+			<rev-version>1.0.0</rev-version>
+			<changelog lang="en">
+				<change>Initial release</change>
+			</changelog>
+		</entry>
+	</history>
+  </header>
+  <action-group>
+    <copy>
+      <file from="root/createpdf.php" to="createpdf.php" />
+      <file from="root/pdf24api.php" to="pdf24api.php" />
+      <file from="root/language/en/mods/pdf24.php" to="language/en/mods/pdf24.php" />
+	  <file from="root/styles/prosilver/theme/images/icon_pdf.gif" to="styles/prosilver/theme/images/icon_pdf.gif" />
+    </copy>
+    <open src="viewtopic.php">
+      <edit>
+        <find><![CDATA[$user->session_begin();]]></find>
+        <action type="after-add"><![CDATA[$user->add_lang('mods/pdf24');]]></action>
+      </edit>
+      <edit>
+        <find>'U_TOPIC'</find>
+        <action type="before-add"><![CDATA['U_PDF_TOPIC'			=> append_sid("{$phpbb_root_path}createpdf.$phpEx", "t=$topic_id"),]]></action>
+      </edit>
+    </open>
+	<open src="styles/prosilver/template/overall_header.html">
+      <edit>
+        <find><![CDATA[{U_PRINT_PM}]]></find>
+        <action type="after-add"><![CDATA[<!-- IF U_PDF_TOPIC --><li class="rightside"><a href="http://{S_USER_LANG}.pdf24.org" title="{L_DOWNLOAD_AS_PDF}" class="pdf" onclick="window.open('{U_PDF_TOPIC}','pdf24PopWin','scrollbars=yes,width=400,height=200,top=0,left=0'); return false;">{L_DOWNLOAD_AS_PDF}</a></li><!-- ENDIF -->]]></action>
+      </edit>
+    </open>
+	<open src="styles/prosilver/theme/buttons.css">
+      <edit>
+        <find><![CDATA[a.print, a.sendemail, a.fontsize {]]></find>
+        <action type="replace-with"><![CDATA[a.print, a.sendemail, a.fontsize, a.pdf {]]></action>
+      </edit>
+	  <edit>
+        <find><![CDATA[a.fontsize:hover {
+	background-position: 0 -20px;
+	text-decoration: none;
+}]]></find>
+        <action type="after-add"><![CDATA[
+a.pdf {
+	background-image: none;
+	width: 16px;
+}]]></action>
+      </edit>
+    </open>
+	<open src="styles/prosilver/theme/colours.css">
+      <edit>
+        <find><![CDATA[a.fontsize {
+	background-image: url("{T_THEME_PATH}/images/icon_fontsize.gif");
+}]]></find>
+        <action type="after-add"><![CDATA[
+a.pdf {
+	background-image: url("{T_THEME_PATH}/images/icon_pdf.gif");
+}]]></action>
+      </edit>
+    </open>
+	<diy-instructions lang="en"><![CDATA[Don't forget to refresh the theme in admin control panel]]></diy-instructions>
+  </action-group>
+</mod>

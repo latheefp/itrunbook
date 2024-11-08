@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+			<title lang="en">Email To User On Group Status Change 1.0.1a - 1.0.2</title>
+				<description lang="en">Upgrades previous 1.0.1a Email To User On Group Status Change to 1.0.2</description>
+		<author-group>
+			<author>
+				<realname>Rich McGirr</realname>
+				<username>RMcGirr83</username>
+				<homepage>http://rmcgirr83.org</homepage>
+			</author>		
+		</author-group>
+		<mod-version>1.0.0</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.8</target-version>
+		</installation>
+		<link-group>
+			<link type="parent" href="../install_mod.xml" lang="en">Main Install File</link>
+		</link-group>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/includes/email_to_user.php" to="includes/email_to_user.php" />
+			<file from="root/language/en/email/*.*" to="language/en/email/*.*" />
+		</copy>
+		<open src="includes/functions_user.php">
+        	<edit>
+			<comment lang="en">You must remove the code inserted by the 1.0.1a version of the mod</comment>
+    			<find><![CDATA[			// BEGIN email to user mod
+			// send the user(s) an email...maybe
+				include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+				email_to_user('add', $user_id, $group_id, $pending);
+			//END email to user mod]]></find>
+    			<action type="replace-with"><![CDATA[]]></action>
+            </edit> 
+            <edit>
+			<comment lang="en">You must remove the code inserted by the 1.0.1a version of the mod</comment>
+                <find><![CDATA[        // BEGIN email to user mod
+        // send the user(s) an email...maybe
+		foreach ( $update_id_ary as $user_id )
+		{
+			include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+			email_to_user('promote', $user_id, $group_id);
+		}
+		//END email to user mod]]></find>
+    			<action type="replace-with"><![CDATA[]]></action>
+            </edit>
+            <edit>
+                <find><![CDATA[	$log = ($leader) ? 'LOG_MODS_ADDED' : (($pending) ? 'LOG_USERS_PENDING' : ']]></find>
+    			<action type="before-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	// send the user(s) an email...maybe
+	if (!function_exists('email_to_user'))
+	{
+		include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+	}
+	email_to_user('add', $add_id_ary, $group_id, $pending);
+	// END Email To User On Group Status Change]]></action>
+            </edit>			
+            <edit>
+			<comment lang="en">You must remove the code inserted by the 1.0.1a version of the mod</comment>			
+                <find><![CDATA[		// BEGIN email to user mod
+		// send the user(s) an email...maybe
+		include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+		email_to_user('delete', $row['user_id'], $group_id);
+		//END email to user mod]]></find>
+    			<action type="replace-with"><![CDATA[]]></action>
+            </edit>
+			<edit>
+                <find><![CDATA[	$log = 'LOG_GROUP_REMOVE';]]></find>
+    			<action type="before-add"><![CDATA[	// BEGIN Email To User On Group Status Change
+	// send the user(s) an email...maybe
+	if ($group_name)
+	{
+		if (!function_exists('email_to_user'))
+		{
+			include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+		}
+		email_to_user('delete', $user_id_ary, $group_id);
+	}
+	//END Email To User On Group Status Change]]></action>
+            </edit>
+			<edit>
+                <find><![CDATA[			// BEGIN email to user mod
+			foreach ($user_id_ary as $row)
+			{
+				if( $action == 'promote')
+				{
+					include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+					email_to_user('promote', $row, $group_id);
+				}
+				else
+				{
+					include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+					email_to_user('demote', $row, $group_id);
+				}
+			}
+			// END email to user mod]]></find>
+    			<action type="replace-with"><![CDATA[			// BEGIN Email To User On Group Status Change
+			if ($action == 'promote' || $action == 'demote')
+			{
+				if (!function_exists('email_to_user'))
+				{
+					include($phpbb_root_path . 'includes/email_to_user.' . $phpEx);
+				}				
+				
+				if ($action == 'promote')
+				{
+					email_to_user('promote', $user_id_ary, $group_id);
+				}
+				else
+				{
+					email_to_user('demote', $user_id_ary, $group_id);
+				}
+			}
+			// END Email To User On Group Status Change]]></action>
+            </edit>			
+		</open>
+</action-group>
+</mod>

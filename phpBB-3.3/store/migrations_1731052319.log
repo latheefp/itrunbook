@@ -1,0 +1,78 @@
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Schema: \phpbb\viglink\migrations\viglink_data.
+[INFO] Installed Schema: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data.
+[INFO] Installed Data: \phpbb\viglink\migrations\viglink_data; Time: 0.02 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Installing Schema: \phpbb\viglink\migrations\viglink_data_v2.
+[INFO] Installed Schema: \phpbb\viglink\migrations\viglink_data_v2; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data_v2; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_data_v2.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_data_v2.
+[INFO] Installed Data: \phpbb\viglink\migrations\viglink_data_v2; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Installing Schema: \phpbb\viglink\migrations\viglink_ask_admin.
+[INFO] Installed Schema: \phpbb\viglink\migrations\viglink_ask_admin; Time: 0.00 seconds
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_ask_admin.
+[INFO] Installed Data: \phpbb\viglink\migrations\viglink_ask_admin; Time: 0.00 seconds
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_ask_admin
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_cron.
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_cron
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_ask_admin
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_cron
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_data_v2
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin_wait.
+[DEBUG] Installing Schema: \phpbb\viglink\migrations\viglink_ask_admin_wait.
+[INFO] Installed Schema: \phpbb\viglink\migrations\viglink_ask_admin_wait; Time: 0.00 seconds
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_ask_admin
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_cron
+[DEBUG] Migration already effectively installed (skipped): \phpbb\viglink\migrations\viglink_data_v2
+[DEBUG] Apply dependencies of \phpbb\viglink\migrations\viglink_ask_admin_wait.
+[DEBUG] Installing Data: \phpbb\viglink\migrations\viglink_ask_admin_wait.
+[INFO] Installed Data: \phpbb\viglink\migrations\viglink_ask_admin_wait; Time: 0.00 seconds

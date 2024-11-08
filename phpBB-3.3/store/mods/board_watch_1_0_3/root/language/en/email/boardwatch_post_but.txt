@@ -1,0 +1,14 @@
+Subject: Site notification - "{FORUM_NAME}"
+
+Hello {USERNAME},
+
+You are receiving this notification because you are watching for all posts at "{SITENAME}." The forum has received a new topic, "{TOPIC_TITLE}." You can use the following link to view the first unread post in that topic.
+
+{U_FIRST_UNREAD}
+
+You will not receive another site notification until you visit the site (though you may receive a topic or forum notification if you are separately subscribed to another topic or forum that receives a post).
+
+If you want to change your post notifications settings, click on the following link:
+{U_BOARDWATCH_SETTINGS}
+
+{EMAIL_SIG}

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?><!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		<title lang="en">Board watch</title>
+		<description lang="en"><![CDATA[This mod gives users a 'board watch' option to receive notifications for posts made anywhere on the site (analogous to forum watch but for the entire board).]]></description>
+		<author-notes lang="en"><![CDATA[ Each user can choose between two ways for board watch to work: (1) send notification of the first post since the user's last visit and send no further notifications until the user revisits the site (analogous to the way forum watch and topic watch work) or (2) send notifications of all posts. In addition, each user can choose whether forum watch and topic watch work in the normal phpbb3 way (analogous to (1) above) or instead send notifications of all posts or replies in the subscribed forums or topics.  The ability to choose between these two ways of working for boardwatch. forum watch and topic watch can be turned off in the acp.  This mod also slightly changes the wording of the regular phpbb3 notifications to let recipients know how to change their notification settings, and it changes the post links in those notifications so that they lead to the earliest unread post in the topic in question (which I think is a more logical destination than the most recent post in the topic).
+
+Important: before running the install_boardwatch script, I strongly suggest you read the file in the contrib folder for this mod called "changing_default_settings.html" and think about what default options you want your users to have.
+
+The default if you don't change anything is that every user will get an email for every single post that gets posted in any forum where the user is allowed to read the post. Although that's how I have my board set, that can be a LOT of emails, and that may annoy your users. Moreover, if you have a lot of users, your board may get weighed down by sending out huge numbers of emails. (Incidentally, I would be interested in hearing from people about how that default works - and how much that default weighs down the site - on a large board.)
+
+A compromise would be to set the default so that a user gets an email about a post and then does not get another email until the user goes back to the site (analogous to the way plain vanilla phpbb3 deals with topic watch).
+
+And when you run the install_boardwatch.php script after making the file edits, please do not ignore the big red warning it gives you that reads:
+
+"Warning - New permission settings have been added. Be sure to check your permission settings and see that they are as you would like them."
+
+That tells you that you have to give people permissions allowing them to change their boardwatch settings. If you forget to do that, no one will have permission to see the boardwatch module that allows them to change their settings so they all get stuck with whatever default you provided. Go here for more detail on how to set permissions: http://www.phpbb.com/community/viewtopic.php?p=10575065#p10575065
+
+Some people have asked how to get the mod to include the text of the post in the email notice. I don't like doing that on my own board (I would rather encourage users to come to the site), but for people who want to do that I have posted the necessary code here: http://www.phpbb.com/community/viewtopic.php?p=9334935#p9334935
+
+For those of you who have an earlier version installed, I have listed the changes in a file called code_changes_since_1-0-0.txt that appears in the contrib folder.]]></author-notes>
+		<author-group>
+			<author>
+				<realname>Alan</realname>
+				<username>asinshesq</username>
+			</author>
+		</author-group>
+		<mod-version>1.0.3</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>1200</time>
+			<target-version>3.0.8</target-version>
+		</installation>
+		<history>
+			<entry>
+				<date>2010-11-24</date>
+				<rev-version>1.0.3</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[eliminated unnecessary javascript in ucp_boardwatch.html]]></change>
+					<change><![CDATA[minor changes required to install into phpbb 3.0.8]]></change>
+					<change><![CDATA[includes newer version of umil folder]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-09-26</date>
+				<rev-version>1.0.2</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[no change in mod, but includes newer version of umil folder and tested with phpbb3.0.6]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-09</date>
+				<rev-version>1.0.1e</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[fixed version number in includes/ucp/info/ucp_boardwatch.php]]></change>
+					<change><![CDATA[changed the phrase "separately subscribed to a another topic or forum" or "separately subscribed to a topic or forum" to "separately subscribed to another topic or forum" in each of the files this mod adds to language/en/email with filenames ending in "but.txt", and deleted sentence that begins with "You will not receive another topic reply notification..." in language/en/email/boardwatch_topic_notify.txt]]></change>
+					<change><![CDATA[fixed function call in acp_users.php (changed &$data to $data)]]></change>
+					<change><![CDATA[fixed sql query and recursive $email_template definition problems in includes/functions_posting.php]]></change> 
+					<change><![CDATA[fixed bug that changed a user's setting to 0 for a boardwatch option when the user had no permission to see that option and updated any other boardwatch option]]></change>
+					<change><![CDATA[added umil installer to automatically install the required module, permissions and database changes]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-02-15</date>
+				<rev-version>1.0.0</rev-version>
+				<changelog lang="en">
+					<change>no changes in code (re-numbered to 1.0.0 for validation)</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-02-11</date>
+				<rev-version>0.0.1</rev-version>
+				<changelog lang="en">
+					<change>initial version</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/*.*" to="*.*" />
+		</copy>
+		<open src="adm/style/acp_users_prefs.html">
+			<edit>
+				<find><![CDATA[	<fieldset class="quick">]]></find>
+				<action type="before-add"><![CDATA[	<!-- start mod boardwatch -->
+	<!-- INCLUDE acp_boardwatch.html -->
+	<!-- end mod boardwatch -->]]></action>
+			</edit>
+		</open>
+		<open src="includes/acp/acp_users.php">
+			<edit>
+				<find><![CDATA[					'notify'	=> request_var('notify', $user_row['user_notify']),
+				);]]></find>
+				<action type="after-add"><![CDATA[				// start mod boardwatch
+				include($phpbb_root_path . 'includes/functions_boardwatch.' . $phpEx);
+				boardwatch_draw_acp_prefs($data, $user_row);
+				// end mod boardwatch]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[							'user_notify'	=> $data['notify'],
+						);]]></find>
+				<action type="after-add"><![CDATA[						// start mod boardwatch
+						boardwatch_submit_acp_prefs($sql_ary, $data);
+						// end mod boardwatch]]></action>
+			</edit>
+		</open>
+		<open src="includes/functions_display.php">
+			<edit>
+				<find><![CDATA[		$can_watch = true;]]></find>
+				<action type="after-add"><![CDATA[		// start mod boardwatch
+		// if this use has a user_notify_status flag set for no more notices till the next visit, reset flag to 0
+		if ($user->data['user_notify_status'])
+		{
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET user_notify_status = 0
+				WHERE user_id = ' . $user->data['user_id'];
+			$db->sql_query($sql);
+		}
+		// end mod boardwatch]]></action>
+			</edit>
+		</open>
+		<open src="includes/functions_posting.php">
+			<edit>
+				<find><![CDATA[	// -- get forum_userids	|| topic_userids]]></find>
+				<action type="before-add"><![CDATA[	// start mod boardwatch
+	include($phpbb_root_path . 'includes/functions_boardwatch.' . $phpEx);
+	include($phpbb_root_path . 'includes/constants_boardwatch.' . $phpEx);
+	$boardwatch_yes_but_list = include_boardwatch_users($notify_rows, $sql_ignore_users, $mode);
+	// note: in addition to the foregoing, added u.user_notify_status and a test for BOARDWATCH_YES in the query below and in the FORUMS_WATCH TABLE query after that
+	// end mod boardwatch]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	$sql = 'SELECT u.user_id, u.username,]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[u.user_jabber]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, u.user_boardwatch' . (($topic_notification) ? 't' : 'f') . ']]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>
+				<find><![CDATA[			AND w.notify_status = " . NOTIFY_YES . ']]></find>
+				<action type="replace-with"><![CDATA[			AND (w.notify_status = " . NOTIFY_YES . ' OR u.user_boardwatch' . (($topic_notification) ? 't' : 'f') . ' = ' . BOARDWATCH_YES . ')]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[		$notify_rows[$row['user_id']] = array(]]></find>
+				<action type="before-add"><![CDATA[		// start mod boardwatch (and end mod too)...added next line
+		$row['user_boardwatch'] = ($topic_notification) ? $row['user_boardwatcht'] : $row['user_boardwatchf'];]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[			'template'		=> ($topic_notification) ? 'topic_notify' : 'newtopic_notify',]]></find>
+				<action type="replace-with"><![CDATA[			// start mod boardwatch (and end mod too)...added next line and edited the one after to insert 'boardwatch_' in names of templates
+			'yes_but'		=> ($row['user_boardwatch'] == BOARDWATCH_YES_BUT) ? true : false,
+			'template'		=> ($topic_notification) ? 'boardwatch_topic_notify' : 'boardwatch_newtopic_notify',]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber]]></find>
+				<action type="replace-with"><![CDATA[		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber, u.user_boardwatchf]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[				AND fw.notify_status = " . NOTIFY_YES . ']]></find>
+				<action type="replace-with"><![CDATA[				AND (fw.notify_status = " . NOTIFY_YES . ' OR u.user_boardwatchf = ' . BOARDWATCH_YES . ')]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[				'template'		=> 'forum_notify',]]></find>
+				<action type="replace-with"><![CDATA[				// start mod boardwatch (and end mod too)...added next line and edited the one after to insert 'boardwatch_' in name of template
+				'yes_but'		=> ($row['user_boardwatchf'] == BOARDWATCH_YES_BUT) ? true : false,
+				'template'		=> 'boardwatch_forum_notify',]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[			$msg_list_ary[$row['template']][$pos]['user_id']= $row['user_id'];]]></find>
+				<action type="after-add"><![CDATA[			// start mod boardwatch (and end mod too)...added next line
+			$msg_list_ary[$row['template']][$pos]['yes_but']= $row['yes_but'];]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[				$messenger->template($email_template, $addr['lang']);]]></find>
+				<action type="replace-with"><![CDATA[				// start mod boardwatch (and end mod too)...added the next line and in the one after, changed
+				// $email_template to $boardwatch_template
+				$boardwatch_template = ($addr['yes_but']) ? $email_template . '_but' : $email_template;
+				$messenger->template($boardwatch_template, $addr['lang']);]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[					'U_FORUM'				=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id",]]></find>
+				<action type="before-add"><![CDATA[					// start mod boardwatch
+					'U_BOARDWATCH_SETTINGS'	=> generate_board_url() . "/ucp.$phpEx?i=boardwatch&mode=boardwatch",
+					'U_FIRST_UNREAD'		=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&t=$topic_id&view=unread#unread",
+					// end mod boardwatch]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[	if (!empty($update_notification['topic']))]]></find>
+				<action type="before-add"><![CDATA[	// start mod boardwatch
+	if (!empty($update_notification['boardwatch']))
+	{
+		update_boardwatch_status($boardwatch_yes_but_list);
+	}
+	// end mod boardwatch]]></action>
+			</edit>
+		</open>
+		<php-installer><![CDATA[install_boardwatch.php]]></php-installer>
+		<diy-instructions lang="en"><![CDATA[After you make the file edits this mod has you make, and after you finish the installation by clicking the link automod gives you (or directly navigating your browser to http://[your_address]/install_boardwatch.php as instructed above), you need to go into the global permissions part of the ACP and grant the applicable global permissions for this mod to users or groups as you think appropriate.]]></diy-instructions>
+	</action-group>
+</mod>

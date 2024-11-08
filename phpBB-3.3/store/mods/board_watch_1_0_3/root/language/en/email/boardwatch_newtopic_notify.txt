@@ -1,0 +1,18 @@
+Subject: New topic notification - "{FORUM_NAME}"
+
+Hello {USERNAME},
+
+You are receiving this notification because you are watching the forum, "{FORUM_NAME}" at "{SITENAME}." This forum has received a new topic since your last visit, "{TOPIC_TITLE}." You can use the following link to view the first unread post in that topic:
+
+{U_FIRST_UNREAD}
+
+If you want to view the forum, click the following link:
+{U_FORUM}
+
+If you no longer wish to watch this forum you can either click the "Unsubscribe forum" link found in the forum above, or by clicking the following link:
+{U_STOP_WATCHING_FORUM}
+
+If you want to change your post notifications settings, click on the following link:
+{U_BOARDWATCH_SETTINGS}
+
+{EMAIL_SIG}
