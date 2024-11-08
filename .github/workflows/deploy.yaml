@@ -28,7 +28,10 @@ jobs:
           --build-arg COMMIT_HASH=${COMMIT_HASH}
         echo "pass is $DOCKERHUB_PASSWORD" >>tmp1
         echo "user is $DOCKERHUB_USERNAME" >>tmp1
+        ls -ltra 
+        echo "typging file"
         cat tmp1
+        echo "running docker login"
         echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
         docker tag latheefp/$APP_NAME:$VERSION latheefp/$APP_NAME:latest
         docker push latheefp/$APP_NAME:latest
