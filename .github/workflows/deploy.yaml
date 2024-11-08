@@ -32,7 +32,7 @@ jobs:
         echo "typging file"
         cat tmp1
         echo "running docker login"
-        echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      # echo "$DOCKERHUB_PASSWORD" | base64 -d | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
         docker tag latheefp/$APP_NAME:$VERSION latheefp/$APP_NAME:latest
         docker push latheefp/$APP_NAME:latest
         docker push latheefp/$APP_NAME:$VERSION
