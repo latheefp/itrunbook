@@ -20,7 +20,7 @@ jobs:
         # DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
         # DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         DOCKERHUB_USERNAME: "latheefp"
-        DOCKERHUB_PASSWORD: "Chimmu@123"
+        DOCKERHUB_PASSWORD: "dckr_pat_2DdxFBJPCxoyYoyJLgYIvLKFNf0"
         APP_NAME: ${{ github.event.repository.name }}
         VERSION: ${{ vars.VERSION }}
       run: |
