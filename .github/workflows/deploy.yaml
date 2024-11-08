@@ -32,20 +32,18 @@ jobs:
         docker push latheefp/$APP_NAME:$VERSION
 
 
-    # - name: Update Kubernetes deployment
-    #   env:
-    #     CURRENT_DATE: $(date +"%Y%m%d%H%M%S")
-    #     COMMIT_HASH: $(git rev-parse --short HEAD)
-    #     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    - name: Update Kubernetes deployment
+      env:
+
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        APP_NAME: ${{ github.event.repository.name }}
+        VERSION: ${{ vars.VERSION }
         
-    #   run: |
-    #     CURRENT_DATE=$(date +"%Y%m%d")
-    #     COMMIT_HASH=$(git rev-parse --short HEAD)
-    #     IMAGE_TAG=${CURRENT_DATE}_${COMMIT_HASH}  
-    #     echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
-    #     echo image tag is $IMAGE_TAG
-    #     export KUBECONFIG=$PWD/kubeconfig.yaml  # Set KUBECONFIG to the path of the kubeconfig file
-    #     kubectl config get-contexts  # Lists available contexts
-    #     kubectl config use-context egrand
-    #     kubectl set image -n  wapi  deployment/wajunction wapi=latheefp/wapi:$IMAGE_TAG
-    #     kubectl -n wapi rollout restart deployment/wajunction
+      run: |
+       
+        echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
+        export KUBECONFIG=$PWD/kubeconfig.yaml  # Set KUBECONFIG to the path of the kubeconfig file
+        kubectl config get-contexts  # Lists available contexts
+        kubectl config use-context egrand
+        kubectl set image -n  $APP_NAME  deployment/$APP_NAME itrunbook=latheefp/$APP_NAME:$VERSION
+        kubectl -n $APP_NAME rollout restart deployment/$APP_NAME
