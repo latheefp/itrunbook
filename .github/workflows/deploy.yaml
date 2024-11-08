@@ -1,4 +1,4 @@
-name: Deploy to Kubernetes
+name: Build image , push repository and run on k8s
 on:
   push:
     branches:
