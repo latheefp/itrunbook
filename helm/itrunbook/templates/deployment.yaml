@@ -53,11 +53,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+      
       volumes:
         - name: files-pvc
           persistentVolumeClaim:
             claimName: {{ include "itrunbook.fullname" . }}-pvc
+      {{- with .Values.nodeSelector }}      
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

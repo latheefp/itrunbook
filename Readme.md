@@ -61,3 +61,13 @@ helm install itrunbook itrunbook/helm/itrunbook --create-namespace
 ```
 
 This will deploy `itrunbook` in a new namespace in your Kubernetes cluster.
+
+
+DB User creation:
+
+you can create DB user like below (select IP/range based on your environment )
+
+CREAET  USER 'itrunbook'@'10.%' IDENTIFIED BY 'yourxpass';
+
+GRANT ALL PRIVILEGES ON itrunbook.* TO 'itrunbook'@'10.%';
+FLUSH PRIVILEGES;
