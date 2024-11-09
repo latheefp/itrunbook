@@ -1,16 +1,19 @@
 services:
   phpbb:
-    build:
-      context: .
-    #image: bitnami/phpbb:3.3.0
+    # build:
+    #   context: .
+    image: latheefp/itrunbook:3.3
     ports:
       - "8088:80"
     env_file:
       - docker/env
-   # volumes:
-     #  - ./Docker/volume:/update
+    volumes:
+     #  - ./phpBB-3.3:/var/www/html
+       - attachment:/var/www/html/files
     networks:
         - infratool     
 networks:
     infratool:
       external: true
+volumes:
+  attachment:

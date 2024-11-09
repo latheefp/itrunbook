@@ -1,0 +1,14 @@
+# templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "itrunbook.fullname" . }}-pvc
+  labels:
+    app: {{ include "itrunbook.fullname" . }}
+spec:
+  accessModes:
+    - {{ .Values.pvc.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.size }}
+  storageClassName: {{ .Values.pvc.storageClass | default "standard" }}
