@@ -39,7 +39,22 @@ docker-compose up
 git clone https://github.com/latheefp/itrunbook.git
 ```
 
-2. Use Helm to install the application:
+2. update values.yaml based on your requerments. 
+
+```bash
+vi itrunbook/helm/itrunbook/values.yaml
+
+```
+3. if you want to see the manifest before appling, you can run below command.
+
+```bash
+helm template itrunbook  itrunbook/helm/itrunbook --create-namespace >manifest.yaml
+```
+
+
+4. make sure, you are logged in to your k8s cluster with required admin permission to create namespace and deploy it. 
+
+5. Use Helm to install the application:
 
 ```bash
 helm install itrunbook itrunbook/helm/itrunbook --create-namespace
