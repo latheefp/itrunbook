@@ -1,11 +1,13 @@
-Install using docker container:
 
-update line 11 of docker commpose file if you have an existing attachment/files folder from an old installation.
+# itrunbook Installation Guide
 
+## Install using Docker
+
+1. Update line 11 of `docker-compose.yml` file if you have an existing `attachment/files` folder from an old installation.
+
+```yaml
 services:
   phpbb:
-    # build:
-    #   context: .
     image: latheefp/itrunbook:3.3
     ports:
       - "8088:80"
@@ -21,20 +23,26 @@ networks:
       external: true
 volumes:
   attachment:
+```
 
+2. Run the Docker Compose command to bring up the services:
 
+```bash
+docker-compose up
+```
 
+## Install in Kubernetes using Helm
 
-docker compose up
+1. Clone the repository:
 
+```bash
+git clone https://github.com/latheefp/itrunbook.git
+```
 
-How Install in K8s using helm.
+2. Use Helm to install the application:
 
-1. Clone the repo
-
-https://github.com/latheefp/itrunbook.git
-
-
-2. install the using the yaml.
-
+```bash
 helm install itrunbook itrunbook/helm/itrunbook --create-namespace
+```
+
+This will deploy `itrunbook` in a new namespace in your Kubernetes cluster.
