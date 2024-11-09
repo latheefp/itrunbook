@@ -3,7 +3,7 @@
 
 ## Install using Docker
 
-1. Update line 11 of `docker-compose.yml` file if you have an existing `attachment/files` folder from an old installation.
+1. Update line 11 of `docker-compose.yml` file if you have an existing `attachment/files` folder from an old installation. Also, update docker/env based on your db configuration info.
 
 ```yaml
 services:
