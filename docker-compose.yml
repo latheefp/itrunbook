@@ -1,8 +1,8 @@
 services:
   phpbb:
-    # build:
-    #   context: .
-    image: latheefp/itrunbook:3.3
+    build:
+      context: .
+   # image: latheefp/itrunbook:3.3
     ports:
       - "8088:80"
     env_file:

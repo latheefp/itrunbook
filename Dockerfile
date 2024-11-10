@@ -26,4 +26,5 @@ RUN chmod +x adm/entry.sh
 EXPOSE 80
 
 # Start Apache
+#CMD ["/var/www/html/adm/entry.sh"]
 CMD ["adm/entry.sh"]
