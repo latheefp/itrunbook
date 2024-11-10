@@ -6,7 +6,7 @@
 
 echo "Running init script"
 bin/phpbbcli.php db:migrate --safe-mode
-php admin/patch.php
+php adm/patch.php
 apache2-foreground
 
 

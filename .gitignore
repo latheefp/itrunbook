@@ -6,3 +6,5 @@ docker/volume
 ./database
 ./cache-old
 ./docker/volume
+cred
+./cred
